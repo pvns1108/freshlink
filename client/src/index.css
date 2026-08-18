@@ -1,0 +1,81 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  @apply bg-bg text-ink font-sans antialiased;
+}
+
+h1, h2, h3 {
+  font-family: "Fraunces", serif;
+}
+
+/* Visible keyboard focus everywhere */
+a:focus-visible,
+button:focus-visible,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible,
+[tabindex]:focus-visible {
+  outline: 2px solid #146B4B;
+  outline-offset: 2px;
+  border-radius: 6px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
+}
+
+/* ---- Signature element: the Freshness Ring ----
+   A radial gauge used for AI confidence + priority scores throughout
+   the product. It ties the "freshness" metaphor to the data itself
+   instead of a generic progress bar. */
+.freshness-ring {
+  --ring-size: 72px;
+  --ring-thickness: 7px;
+  --ring-color: #146B4B;
+  --ring-track: #E1E7E1;
+  position: relative;
+  width: var(--ring-size);
+  height: var(--ring-size);
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  background: conic-gradient(
+    var(--ring-color) calc(var(--ring-pct, 0) * 1%),
+    var(--ring-track) 0
+  );
+}
+
+.freshness-ring::before {
+  content: "";
+  position: absolute;
+  inset: var(--ring-thickness);
+  border-radius: 50%;
+  background: #fff;
+}
+
+.freshness-ring > span {
+  position: relative;
+  z-index: 1;
+  font-family: "IBM Plex Mono", monospace;
+  font-weight: 600;
+}
+
+/* Custom thin scrollbar for tables/sidebars */
+.thin-scrollbar::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+.thin-scrollbar::-webkit-scrollbar-thumb {
+  background: #E1E7E1;
+  border-radius: 999px;
+}

@@ -1,0 +1,30 @@
+{
+  "name": "freshlink-server",
+  "version": "1.0.0",
+  "description": "FreshLink backend — Express API, AI/OCR services, automation & NGO matching engine",
+  "private": true,
+  "type": "module",
+  "main": "server.js",
+  "scripts": {
+    "dev": "nodemon server.js",
+    "start": "node server.js",
+    "seed": "node seed.js"
+  },
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.5",
+    "express": "^4.19.2",
+    "jsonwebtoken": "^9.0.2",
+    "mongoose": "^8.5.1",
+    "morgan": "^1.10.0",
+    "multer": "^2.0.1",
+    "tesseract.js": "^5.1.0"
+  },
+  "optionalDependencies": {
+    "mongodb-memory-server": "^9.4.0"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.4"
+  }
+}
