@@ -14,6 +14,8 @@
  */
 import dotenv from "dotenv";
 import mongoose from "mongoose";
+import path from "path";
+import { fileURLToPath } from "url";
 import connectDB from "./config/db.js";
 
 import User from "./models/User.js";
@@ -42,15 +44,10 @@ const addDays = (n) => {
 
 const jitter = (base, spread = 0.05) => base + (Math.random() - 0.5) * spread;
 
-async function run() {
+// Wipes and repopulates every collection. Assumes mongoose is already connected,
+// so the server can call it directly (e.g. to auto-seed an empty in-memory DB).
+export async function seedDatabase() {
   console.log("🌱 Seeding FreshLink demo data...\n");
-  await connectDB();
-
-  if (mongoose.connection.readyState !== 1) {
-    console.error("❌ Could not establish a database connection — aborting seed.");
-    process.exit(1);
-  }
-
   console.log("Clearing existing collections...");
   await Promise.all([
     User.deleteMany({}),
@@ -381,12 +378,25 @@ async function run() {
   console.log("   Shop:      shop@freshlink.demo  / shop123");
   console.log("   NGO:       ngo@freshlink.demo   / ngo123");
   console.log("   Household: user@freshlink.demo  / user123\n");
+}
 
+async function run() {
+  await connectDB();
+
+  if (mongoose.connection.readyState !== 1) {
+    console.error("❌ Could not establish a database connection — aborting seed.");
+    process.exit(1);
+  }
+
+  await seedDatabase();
   await mongoose.disconnect();
   process.exit(0);
 }
 
-run().catch((err) => {
-  console.error("❌ Seed failed:", err);
-  process.exit(1);
-});
+// Only run when invoked directly (`npm run seed`), not when imported by server.js.
+if (process.argv[1] && fileURLToPath(import.meta.url) === path.resolve(process.argv[1])) {
+  run().catch((err) => {
+    console.error("❌ Seed failed:", err);
+    process.exit(1);
+  });
+}

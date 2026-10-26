@@ -1,8 +1,11 @@
 import multer from "multer";
 import path from "path";
 import fs from "fs";
+import { fileURLToPath } from "url";
 
-const uploadDir = path.resolve("uploads");
+// Resolve relative to this file (not the CWD) so it matches the static
+// /uploads route in server.js no matter where the process is started from.
+const uploadDir = path.join(path.dirname(fileURLToPath(import.meta.url)), "..", "uploads");
 if (!fs.existsSync(uploadDir)) {
   fs.mkdirSync(uploadDir, { recursive: true });
 }

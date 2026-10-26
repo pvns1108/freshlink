@@ -211,6 +211,21 @@ Then open **http://localhost:5173**.
 
 Individual services: `npm run dev:server` or `npm run dev:client`.
 
+> With no `MONGO_URI`, the server seeds its in-memory database automatically on startup, so the demo credentials below work immediately (a separate `npm run seed` process can't reach the server's in-memory DB). Any empty database is auto-seeded; set `AUTO_SEED=false` to disable.
+
+---
+
+## Deployment (Render, single service)
+
+In production, Express serves the built React client from `client/dist` alongside the API, so the whole app deploys as one web service.
+
+1. Create a free MongoDB Atlas cluster, add a database user, and allow network access from `0.0.0.0/0`. Copy the `mongodb+srv://...` connection string.
+2. In Render: **New → Blueprint**, pick this GitHub repo. Render reads [`render.yaml`](render.yaml).
+3. When prompted, paste the Atlas string as `MONGO_URI`. `JWT_SECRET` is generated automatically.
+4. Deploy. On first boot the empty database is seeded with the demo accounts.
+
+Any Node host works the same way: build with `npm install --include=dev && npm run build`, start with `npm start`.
+
 ---
 
 ## Demo Credentials

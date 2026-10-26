@@ -1,0 +1,25 @@
+# Render Blueprint — deploys FreshLink as a single web service:
+# Express serves both the API (/api) and the built React client.
+# Create it at https://dashboard.render.com/blueprints → "New Blueprint Instance".
+services:
+  - type: web
+    name: freshlink
+    runtime: node
+    plan: free
+    # --include=dev: Vite/Tailwind are client devDependencies needed to build.
+    buildCommand: npm install --include=dev && npm run build
+    startCommand: npm start
+    healthCheckPath: /api/health
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: NODE_VERSION
+        value: "20"
+      - key: JWT_SECRET
+        generateValue: true
+      - key: AI_MODE
+        value: demo
+      # MongoDB Atlas connection string (required for a reliable deploy;
+      # the in-memory fallback needs ~500 MB and resets on every restart).
+      - key: MONGO_URI
+        sync: false
